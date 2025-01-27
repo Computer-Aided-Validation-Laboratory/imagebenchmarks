@@ -1,7 +1,7 @@
 """
 ================================================================================
+image benchmarks for
 pyvale: the python validation engine
-image benchmarks
 License: MIT
 Copyright (C) 2024 The Computer Aided Validation Team
 ================================================================================
@@ -9,13 +9,16 @@ Copyright (C) 2024 The Computer Aided Validation Team
 import numpy as np
 from scipy.spatial.transform import Rotation
 
+CASE_FILE = "case_list.json"
+
 FIELD_KEY = "disp_y"
 COMPONENTS = ("disp_x","disp_y","disp_z")
 SPAT_DIMS = 3
 
-CAMERAS = { "1Mpx":(np.array([1280,960]),np.array([5.3e-3,5.3e-3])),
-            "5Mpx":(np.array([2464,2056]),np.array([3.45e-3,3.45e-3])),
-            "24Mpx":(np.array([5328,4608]),np.array([2.74e-3,2.74e-3])),}
+CAMERA_TAGS = ("1Mpx","5Mpx","24Mpx")
+CAMERA_PIXELS = ((np.array([1280,960]),np.array([5.3e-3,5.3e-3])),
+           (np.array([2464,2056]),np.array([3.45e-3,3.45e-3])),
+           (np.array([5328,4608]),np.array([2.74e-3,2.74e-3])),)
 BORDER_FACTORS = (1.05,0.75)
 SUBSAMPLING = (1,2)
 FOCAL_LENGTH = 50.0
@@ -28,7 +31,7 @@ SIM_FILES = ("plate_m1",
             "plate_m50",)
 SIM_TAGS = ("plate",)*5
 
-SIM_NUM = len(SIM_FILES)
+SIM_COUNT = len(SIM_FILES)
 
 PLATE_ROTS = Rotation.from_euler("zyx",
                                 [0.0, -20.0, 0.0],
