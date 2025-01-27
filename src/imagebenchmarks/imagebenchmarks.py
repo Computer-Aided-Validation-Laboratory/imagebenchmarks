@@ -36,6 +36,25 @@ def check_sim_index(sim_index: int) -> int:
 
     return sim_index
 
+def check_case_index(case_index: int, case_list: list[str]) -> int:
+    if case_index >= len(case_list) or case_index < 0:
+        case_index = 0
+        warnings.warn(f"Case index {case_index} is out of bounds for"
+                        + f" the number of benchmarks {len(case_list)}."
+                        + "Defaulting case index to zero",
+                        category=UserWarning,)
+
+    return case_index
+
+def check_case_tag(case_tag: str, case_list: list[str]) -> int:
+    if case_tag not in case_list:
+        case_tag = case_list[0]
+        warnings.warn(f"Case tag '{case_tag}' is not in the benchmarks."
+                        + f" Defaulting to case tag '{case_list[0]}'.",
+                        category=UserWarning,)
+
+    return case_tag
+
 def get_sim_file_path(sim_index: int) -> tuple[Path,Path]:
     sim_index = check_sim_index(sim_index)
     return (Path(files("imagebenchmarks.simulations")
@@ -231,22 +250,54 @@ def load_case_list(benchmark_path: Path | None = None) -> list[str]:
         benchmark_path = get_benchmark_path()
 
     case_list_path = benchmark_path / const.CASE_FILE
-    with open(case_list_path, 'r', encoding='utf-8') as case_file:
+    with open(case_list_path, "r", encoding="utf-8") as case_file:
         case_list = json.load(case_file)
 
     return case_list
 
 
-def load_benchmark(case_index: int,
-                   benchmark_path: Path | None = None
-                   ) -> tuple[str,pyvale.CameraMeshData,pyvale.CameraData]:
+def load_benchmark_by_index(case_index: int,
+                             benchmark_path: Path | None = None
+                            ) -> tuple[str,
+                                       pyvale.CameraMeshData,
+                                       pyvale.CameraData]:
 
     if benchmark_path is None:
         benchmark_path = get_benchmark_path()
 
-    # Load the case file first
+    case_list = load_case_list(benchmark_path)
+    case_index = check_case_index(case_index,case_list)
 
-    # Use the case file to get the mesh
+    case_path = benchmark_path/(case_list[case_index]+".dill")
+    with open(case_path,"rb") as case_file:
+        case_data = dill.load(case_file)
 
-    # Return everything as a tuple
+    mesh_path = benchmark_path/(case_data[1]+".dill")
+    with open(mesh_path,"rb") as mesh_file:
+        mesh_data = dill.load(mesh_file)
+
+    return (case_data[0],mesh_data,case_data[2])
+
+def load_benchmark_by_tag(case_tag: str,
+                          benchmark_path: Path | None = None
+                          ) -> tuple[str,
+                                     pyvale.CameraMeshData,
+                                     pyvale.CameraData]:
+
+    if benchmark_path is None:
+        benchmark_path = get_benchmark_path()
+
+    case_list = load_case_list(benchmark_path)
+    case_tag = check_case_tag(case_tag,case_list)
+
+    case_path = benchmark_path/(case_tag+".dill")
+    with open(case_path,"rb") as case_file:
+        case_data = dill.load(case_file)
+
+    mesh_path = benchmark_path/(case_data[1]+".dill")
+    with open(mesh_path,"rb") as mesh_file:
+        mesh_data = dill.load(mesh_file)
+
+    return (case_data[0],mesh_data,case_data[2])
+
 

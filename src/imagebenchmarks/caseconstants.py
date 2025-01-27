@@ -24,21 +24,25 @@ SUBSAMPLING = (1,2)
 FOCAL_LENGTH = 50.0
 
 
-SIM_FILES = ("plate_m1",
-            "plate_m5",
-            "plate_m10",
+SIM_FILES = ("plate_m10",
             "plate_m25",
             "plate_m50",)
-SIM_TAGS = ("plate",)*5
 
 SIM_COUNT = len(SIM_FILES)
+SIM_TAGS = ("plate",)*SIM_COUNT
+
 
 PLATE_ROTS = Rotation.from_euler("zyx",
                                 [0.0, -20.0, 0.0],
                                 degrees=True)
-CAMERA_ROTS = (PLATE_ROTS,)*5
+CAMERA_ROTS = (PLATE_ROTS,)*SIM_COUNT
 
 
+# SIM_FILES = ("plate_m1",
+#             "plate_m5",
+#             "plate_m10",
+#             "plate_m25",
+#             "plate_m50",)
 # SIM_FILES = ("cylinder_m1",
 #             "cylinder_m2",
 #             "cylinder_m3",

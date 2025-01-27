@@ -12,9 +12,8 @@ def main() -> None:
     ib.build_and_save_benchmarks()
 
     case_list = ib.load_case_list()
-    print()
     print(80*"-")
-    print(case_list)
+    print(case_list[-1])
     print(80*"-")
 
 if __name__ == "__main__":

@@ -17,5 +17,23 @@ def main() -> None:
     print(case_list[case_index])
     print(80*"-")
 
+    (case_ident,case_mesh,case_camera) = ib.load_benchmark_by_index(case_index)
+    print()
+    print(80*"-")
+    print(f"{case_ident=}")
+    print(case_mesh)
+    print(case_camera)
+    print(80*"-")
+
+    case_tag = case_list[-1]
+    (case_ident,case_mesh,case_camera) = ib.load_benchmark_by_tag(case_tag)
+    print()
+    print(80*"-")
+    print(f"{case_ident=}")
+    print(case_mesh)
+    print(case_camera)
+    print(80*"-")
+
+
 if __name__ == "__main__":
     main()
