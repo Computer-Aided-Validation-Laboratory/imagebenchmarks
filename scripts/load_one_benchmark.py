@@ -10,7 +10,7 @@ import imagebenchmarks as ib
 
 def main() -> None:
 
-    case_index = 41
+    case_index = 10
     case_list = ib.load_case_list()
     print()
     print(80*"-")
@@ -33,6 +33,10 @@ def main() -> None:
     print(case_mesh)
     print(case_camera)
     print(80*"-")
+
+    print(f"{case_mesh.coord_cent=}")
+    print(f"{case_mesh.coord_bound_min=}")
+    print(f"{case_mesh.coord_bound_max=}")
 
 
 if __name__ == "__main__":
