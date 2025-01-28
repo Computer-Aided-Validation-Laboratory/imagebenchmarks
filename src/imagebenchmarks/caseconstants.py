@@ -16,9 +16,9 @@ COMPONENTS = ("disp_x","disp_y","disp_z")
 SPAT_DIMS = 3
 
 CAMERA_TAGS = ("1Mpx","5Mpx","24Mpx")
-CAMERA_PIXELS = ((np.array([1280,960]),np.array([5.3e-3,5.3e-3])),
-           (np.array([2464,2056]),np.array([3.45e-3,3.45e-3])),
-           (np.array([5328,4608]),np.array([2.74e-3,2.74e-3])),)
+CAMERA_PIXELS = ((np.array([1280,960],dtype=np.int32),np.array([5.3e-3,5.3e-3])),
+           (np.array([2464,2056],dtype=np.int32),np.array([3.45e-3,3.45e-3])),
+           (np.array([5328,4608],dtype=np.int32),np.array([2.74e-3,2.74e-3])),)
 BORDER_FACTORS = (1.05,0.75)
 SUBSAMPLING = (1,2)
 FOCAL_LENGTH = 50.0
