@@ -15,7 +15,7 @@ The following cameras form the benchmark list:
 All cameras use a 50mm focal length lens. Two pixel subsampling (anti-aliasing) cases are analysed per camera: 1) 1 sample per pixel, 2) 2x2 subsamples per pixel.
 
 **Camera Position**<br>
-The camera is automatically positioned such that the center of the pixel array points at the center of the mesh. For the plate simulation the camera is rotated -20 degrees about the Y axis to view the plate at an angle.
+The camera is automatically positioned such that the center of the pixel array points at the center of the mesh. For the plate simulation the camera is rotated -30 degrees about the Y axis to view the plate at an angle.
 
 The imaging distance is also automatically set based on the 'crop' / 'no crop' condition. For the 'crop' condition the camera is positioned to include 75% of the bounding box enclosing the mesh projected onto the camera viewing plane. For the no crop condition the camera is placed to include 105% of the bounding box enclosing the mesh projected onto the camera viewing plane (i.e. a 5% buffer is placed around the projected bounding box to ensure all elements are within the field of view).
 

@@ -33,7 +33,7 @@ SIM_TAGS = ("plate",)*SIM_COUNT
 
 
 PLATE_ROTS = Rotation.from_euler("zyx",
-                                [0.0, -20.0, 0.0],
+                                [0.0, -30.0, 0.0],
                                 degrees=True)
 CAMERA_ROTS = (PLATE_ROTS,)*SIM_COUNT
 
