@@ -216,6 +216,7 @@ def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
                                                             cc[1],
                                                             const.FOCAL_LENGTH,
                                                             fov_leng)
+
                     roi_pos_world = mesh_world.coord_cent[:-1]
                     cam_pos_world = (roi_pos_world + np.max(image_dist)
                                         *cam_z_world)

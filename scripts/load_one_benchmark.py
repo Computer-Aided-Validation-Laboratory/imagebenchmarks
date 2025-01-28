@@ -33,10 +33,15 @@ def main() -> None:
     print(case_mesh)
     print(case_camera)
     print(80*"-")
-
     print(f"{case_mesh.coord_cent=}")
     print(f"{case_mesh.coord_bound_min=}")
     print(f"{case_mesh.coord_bound_max=}")
+    print(80*"-")
+    print(f"{case_mesh.node_count=}")
+    print(f"{case_mesh.elem_count=}")
+    print(f"{case_mesh.coords.shape=}")
+    print(f"{case_mesh.connectivity.shape=}")
+    print(f"{case_mesh.field_by_node.shape=}")
 
 
 if __name__ == "__main__":
