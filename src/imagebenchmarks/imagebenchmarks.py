@@ -210,9 +210,9 @@ def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
                             f"{mesh_world.elem_count}elems")
 
                     cam_z_world = const.CAMERA_ROTS[ii].as_matrix()[:,-1]
-                    fov_leng = (pyvale.fov_from_cam_rot(const.CAMERA_ROTS[ii],
+                    fov_leng = (pyvale.CameraTools.fov_from_cam_rot_3d(const.CAMERA_ROTS[ii],
                                                         mesh_world.coords)*bb)
-                    image_dist = pyvale.image_dist_from_fov(cc[0],
+                    image_dist = pyvale.CameraTools.image_dist_from_fov_3d(cc[0],
                                                             cc[1],
                                                             const.FOCAL_LENGTH,
                                                             fov_leng)
