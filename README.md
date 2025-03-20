@@ -1,6 +1,22 @@
 # Image Benchmarks
 A set of physics-based imaging benchmarks for testing the speed of simulating digital image correlation and infrared thermography using `pyvale`.
 
+## Usage
+The benchmark cases are describes below and z case can be retrieved using its index in the case list or by using its string tag as follows:
+
+```python
+import imagebenchmarks as ib
+
+(case_ident,case_mesh,case_camera) = ib.load_benchmark_by_index(case_index)
+(case_ident,case_mesh,case_camera) = ib.load_benchmark_by_tag(case_tag)
+```
+
+The case list can also be retrieved using the following: `case_list = ib.load_case_list()`. The mesh data (nodal coordinates, connectivity table and field to render) for the case is stored as a `pyvale.CameraMesh` data class and the camera data for the case is stored as a `pyvale.CameraData` data class. Each `pyvale.CameraData.field_to_render` contains 8 time steps to render along with a zero frame at the start.
+
+The benchmarks should be run as follows:
+- Average render time for a single frame rendering the last field in `pyvale.CameraData.field_to_render` 30 times sequentially. This case only allows parallelisation within a single frame.
+- Average total time to render all 8 frames in `pyvale.CameraData.field_to_render` 30 times. This case allows for rendering the 8 frames in parallel.
+
 ## Case Descriptions
 
 **Simulations**<br>
@@ -61,25 +77,3 @@ The list of all benchmark cases is stored in a json file which can be retrieved 
     "case35_plate_24Mpx_2subsamp_crop_250496elems"
 ]
 ```
-
-## Usage
-A case can be retrieved using its index in the case list or by using its string tag as follows:
-
-```python
-import imagebenchmarks as ib
-
-(case_ident,case_mesh,case_camera) = ib.load_benchmark_by_index(case_index)
-(case_ident,case_mesh,case_camera) = ib.load_benchmark_by_tag(case_tag)
-```
-
-The case list can also be retrieved using the following: `case_list = ib.load_case_list()`. The mesh data (nodal coordinates, connectivity table and field to render) for the case is stored as a `pyvale.CameraMesh` data class and the camera data for the case is stored as a `pyvale.CameraData` data class. Each `pyvale.CameraData.field_to_render` contains 8 time steps to render along with a zero frame at the start.
-
-The benchmarks should be run as follows:
-- Average render time for a single frame rendering the last field in `pyvale.CameraData.field_to_render` 30 times sequentially. This case only allows parallelisation within a single frame.
-- Average total time to render all 8 frames in `pyvale.CameraData.field_to_render` 30 times. This case allows for rendering the 8 frames in parallel.
-
-## Leaderboard
-TODO
-
-## Contributors
-TODO

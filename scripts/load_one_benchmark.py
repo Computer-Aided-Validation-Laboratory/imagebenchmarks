@@ -41,7 +41,7 @@ def main() -> None:
     print(f"{case_mesh.elem_count=}")
     print(f"{case_mesh.coords.shape=}")
     print(f"{case_mesh.connectivity.shape=}")
-    print(f"{case_mesh.field_by_node.shape=}")
+    print(f"{case_mesh.fields_by_node.shape=}")
 
 
 if __name__ == "__main__":

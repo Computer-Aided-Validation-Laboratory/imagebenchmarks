@@ -11,7 +11,7 @@ from pathlib import Path
 import mooseherder as mh
 
 def main() -> None:
-    sim_str = "cylinder_m2"
+    sim_str = "plate_m10_quadtri"
     sim_path = Path("src/imagebenchmarks/simulations/")
 
     gmsh_path = Path.home()
@@ -22,11 +22,12 @@ def main() -> None:
         gmsh_runner = mh.GmshRunner(gmsh_path / 'gmsh/bin/gmsh')
 
         gmsh_start = time.perf_counter()
-        gmsh_runner.run(sim_path / sim_files[0])
+        gmsh_runner.run(sim_path / sim_files[0],parse_only=True)
         gmsh_run_time = time.perf_counter()-gmsh_start
     else:
         print('Bypassing gmsh.')
         gmsh_run_time = 0.0
+
 
     config = {'main_path': Path.home() / 'moose',
             'app_path': Path.home() / 'proteus',
