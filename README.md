@@ -20,7 +20,11 @@ The benchmarks should be run as follows:
 ## Case Descriptions
 
 **Simulations**<br>
-A 3D thin plate with a hole in the center loaded in tension. Uses tetrahedral 4-node linear elements with the surface mesh extracted to 3 node linear triangles. Higher order and quadrilateral meshes are included in the later benchmarks denoted: 'quadtri' for quadratic triangles, 'linquad' for linear quadrilaterals and 'quadquad' for quadratic quadrilaterals. The vertical displacement field `disp_y` is to be rendered as the image. Plate mesh bounding box: X [0,100], Y [0,130], Z [0,2] mm.
+A 3D thin plate with a hole in the center loaded in tension as shown in the figure below. Uses tetrahedral 4-node linear elements with the surface mesh extracted to 3 node linear triangles. Higher order and quadrilateral meshes are included in the later benchmarks denoted: 'quadtri' for quadratic triangles, 'linquad' for linear quadrilaterals and 'quadquad' for quadratic quadrilaterals. The vertical displacement field `disp_y` is to be rendered as the image. Plate mesh bounding box: X [0,100], Y [0,130], Z [0,2] mm.
+
+|![fig_test_case_plate](images/imagebench_platetest_m10.png)|
+|:--:|
+|*Paraview rendering of the plate test case for the coarsest mesh showing the vertical displacement field.*|
 
 **Cameras**<br>
 The following cameras form the benchmark list:
