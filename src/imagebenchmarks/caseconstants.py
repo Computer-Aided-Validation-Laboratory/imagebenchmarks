@@ -11,8 +11,8 @@ from scipy.spatial.transform import Rotation
 
 CASE_FILE = "case_list.json"
 
-FIELD_KEY = "disp_y"
-COMPONENTS = ("disp_x","disp_y","disp_z")
+RENDER_FIELD = ("disp_y",)
+DISP_COMPONENTS = ("disp_x","disp_y","disp_z")
 SPAT_DIMS = 3
 
 CAMERA_TAGS = ("1Mpx","5Mpx","24Mpx")

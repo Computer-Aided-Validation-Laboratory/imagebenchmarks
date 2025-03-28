@@ -105,7 +105,7 @@ ss316LPRatio = 0.3      # -
     petsc_options_iname = '-pc_type -pc_hypre_type'
     petsc_options_value = 'hypre boomeramg'
 
-    l_max_its = 200
+    l_max_its = 500
     l_tol = 1e-6
 
     nl_max_its = 100

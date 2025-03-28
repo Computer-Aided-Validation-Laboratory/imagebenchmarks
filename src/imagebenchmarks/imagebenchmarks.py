@@ -151,10 +151,14 @@ def save_surface_meshes(sim_indices: tuple[int,...] | None = None,
     for ii in sim_indices:
         sim_index = check_sim_index(ii)
         curr_path = sim_path/(const.SIM_FILES[sim_index]+"_out.e")
-        mesh_world = pyvale.create_camera_mesh(curr_path,
-                                                const.FIELD_KEY,
-                                                const.COMPONENTS,
-                                                const.SPAT_DIMS)
+
+        sim_data = mh.ExodusReader(curr_path).read_all_sim_data()
+        sim_data.coords = sim_data.coords*1000.0 # scale to mm
+
+        mesh_world = pyvale.create_render_mesh(sim_data,
+                                                const.RENDER_FIELD,
+                                                const.SPAT_DIMS,
+                                                const.DISP_COMPONENTS)
 
         sim_tag = f"mesh{sim_index}_{mesh_world.elem_count}elems"
         mesh_save_file = save_path/(sim_tag+".dill")
@@ -185,10 +189,14 @@ def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
     for ii in sim_indices:
         sim_index = check_sim_index(ii)
         curr_path = sim_path/(const.SIM_FILES[sim_index]+"_out.e")
-        mesh_world = pyvale.create_camera_mesh(curr_path,
-                                                const.FIELD_KEY,
-                                                const.COMPONENTS,
-                                                const.SPAT_DIMS)
+
+        sim_data = mh.ExodusReader(curr_path).read_all_sim_data()
+        sim_data.coords = sim_data.coords*1000.0 # scale to mm
+
+        mesh_world = pyvale.create_render_mesh(sim_data,
+                                                const.RENDER_FIELD,
+                                                const.SPAT_DIMS,
+                                                const.DISP_COMPONENTS)
 
         sim_tag = f"mesh{sim_index}_{mesh_world.elem_count}elems"
         mesh_path = save_path/(sim_tag+".dill")
@@ -260,7 +268,7 @@ def load_case_list(benchmark_path: Path | None = None) -> list[str]:
 def load_benchmark_by_index(case_index: int,
                              benchmark_path: Path | None = None
                             ) -> tuple[str,
-                                       pyvale.CameraMeshData,
+                                       pyvale.RenderMeshData,
                                        pyvale.CameraData]:
 
     if benchmark_path is None:
@@ -282,7 +290,7 @@ def load_benchmark_by_index(case_index: int,
 def load_benchmark_by_tag(case_tag: str,
                           benchmark_path: Path | None = None
                           ) -> tuple[str,
-                                     pyvale.CameraMeshData,
+                                     pyvale.RenderMeshData,
                                      pyvale.CameraData]:
 
     if benchmark_path is None:

@@ -8,8 +8,8 @@ def main() -> None:
     sim_file = sim_path / "cylinder_m1_out.e"
 
     mesh_world = pyvale.create_camera_mesh(sim_file,
-                                           ib.const.FIELD_KEY,
-                                           ib.const.COMPONENTS,
+                                           ib.const.RENDER_FIELD,
+                                           ib.const.DISP_COMPONENTS,
                                            ib.const.SPAT_DIMS)
 
     save_path = Path.home() / "zig-learn" / "rasteriser" / "data"

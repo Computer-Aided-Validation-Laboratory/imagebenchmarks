@@ -21,8 +21,8 @@ def main() -> None:
     for ii,ff in enumerate(ib.SIM_FILES):
 
         mesh_world = pyvale.create_camera_mesh(sim_path/(ff+"_out.e"),
-                                               ib.FIELD_KEY,
-                                               ib.COMPONENTS,
+                                               ib.RENDER_FIELD,
+                                               ib.DISP_COMPONENTS,
                                                ib.SPAT_DIMS)
 
         sim_tag = f"mesh{ii}_{mesh_world.elem_count}elems"
