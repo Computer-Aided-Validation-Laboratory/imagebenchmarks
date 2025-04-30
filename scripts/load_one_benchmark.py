@@ -43,6 +43,8 @@ def main() -> None:
     print(f"{case_mesh.connectivity.shape=}")
     print(f"{case_mesh.fields_by_node.shape=}")
 
+    # TODO: plot the benchmark mesh using pyvale
+
 
 if __name__ == "__main__":
     main()

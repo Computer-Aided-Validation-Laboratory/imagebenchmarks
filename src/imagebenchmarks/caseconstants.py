@@ -26,18 +26,26 @@ FOCAL_LENGTH = 50.0
 
 SIM_FILES = ("plate_m10",
             "plate_m25",
-            "plate_m50",
             "plate_m10_linquad",
             "plate_m10_quadtri",
-            "plate_m10_quadquad",)
+            "plate_m10_quadquad",
+            "cube_TET4",
+            "cube_TET10",
+            "cube_HEX8",
+            "cube_HEX20",
+            "cube_HEX27",)
 
 SIM_COUNT = len(SIM_FILES)
 SIM_TAGS = ("plate_lintri",
             "plate_lintri",
-            "plate_lintri",
             "plate_linquad",
             "plate_quadtri",
-            "plate_quadquad")
+            "plate_quadquad",
+            "cube_TET4",
+            "cube_TET10",
+            "cube_HEX8",
+            "cube_HEX20",
+            "cube_HEX27",)
 
 
 PLATE_ROTS = Rotation.from_euler("zyx",

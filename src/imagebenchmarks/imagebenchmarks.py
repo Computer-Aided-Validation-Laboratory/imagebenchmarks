@@ -15,7 +15,7 @@ import json
 import numpy as np
 import dill
 import mooseherder as mh
-import pyvale
+import pyvale as pyv
 
 import imagebenchmarks.caseconstants as const
 
@@ -155,12 +155,15 @@ def save_surface_meshes(sim_indices: tuple[int,...] | None = None,
         sim_data = mh.ExodusReader(curr_path).read_all_sim_data()
         sim_data.coords = sim_data.coords*1000.0 # scale to mm
 
-        mesh_world = pyvale.create_render_mesh(sim_data,
-                                                const.RENDER_FIELD,
-                                                const.SPAT_DIMS,
-                                                const.DISP_COMPONENTS)
+        # mesh_world = pyvale.create_render_mesh(sim_data,
+        #                                         const.RENDER_FIELD,
+        #                                         const.SPAT_DIMS,
+        #                                         const.DISP_COMPONENTS)
 
-        sim_tag = f"mesh{sim_index}_{mesh_world.elem_count}elems"
+        mesh_world = pyv.extract_surf_mesh(sim_data)
+        elem_count = mesh_world.connect["connect1"].shape[1]
+
+        sim_tag = f"mesh{sim_index}_{elem_count}elems"
         mesh_save_file = save_path/(sim_tag+".dill")
         with open(mesh_save_file, 'wb') as dill_file:
             dill.dump(mesh_world,dill_file)
@@ -193,12 +196,12 @@ def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
         sim_data = mh.ExodusReader(curr_path).read_all_sim_data()
         sim_data.coords = sim_data.coords*1000.0 # scale to mm
 
-        mesh_world = pyvale.create_render_mesh(sim_data,
-                                                const.RENDER_FIELD,
-                                                const.SPAT_DIMS,
-                                                const.DISP_COMPONENTS)
+        mesh_world = pyv.extract_surf_mesh(sim_data)
+        elem_count = mesh_world.connect["connect1"].shape[1]
+        coord_cent = (np.max(mesh_world.coords,axis=0)
+                      - np.min(mesh_world.coords,axis=0))/2
 
-        sim_tag = f"mesh{sim_index}_{mesh_world.elem_count}elems"
+        sim_tag = f"mesh{sim_index}_{elem_count}elems"
         mesh_path = save_path/(sim_tag+".dill")
         with open(mesh_path, 'wb') as dill_file:
             dill.dump(mesh_world,dill_file)
@@ -215,21 +218,21 @@ def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
 
                     case_tag = (f"case{case_count}_{const.SIM_TAGS[ii]}_{const.CAMERA_TAGS[jj]}_"+
                             f"{ss}subsamp_{crop_str}_"+
-                            f"{mesh_world.elem_count}elems")
+                            f"{elem_count}elems")
 
                     cam_z_world = const.CAMERA_ROTS[ii].as_matrix()[:,-1]
-                    fov_leng = (pyvale.CameraTools.fov_from_cam_rot_3d(const.CAMERA_ROTS[ii],
+                    fov_leng = (pyv.CameraTools.fov_from_cam_rot_3d(const.CAMERA_ROTS[ii],
                                                         mesh_world.coords)*bb)
-                    image_dist = pyvale.CameraTools.image_dist_from_fov_3d(cc[0],
+                    image_dist = pyv.CameraTools.image_dist_from_fov_3d(cc[0],
                                                             cc[1],
                                                             const.FOCAL_LENGTH,
                                                             fov_leng)
 
-                    roi_pos_world = mesh_world.coord_cent[:-1]
+                    roi_pos_world = coord_cent
                     cam_pos_world = (roi_pos_world + np.max(image_dist)
                                         *cam_z_world)
 
-                    cam_data = pyvale.CameraData(pixels_num=cc[0],
+                    cam_data = pyv.CameraData(pixels_num=cc[0],
                                                 pixels_size=cc[1],
                                                 pos_world=cam_pos_world,
                                                 rot_world=const.CAMERA_ROTS[ii],
@@ -244,7 +247,7 @@ def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
                     benchmark_save_paths.append(benchmark_path)
 
                     case_list.append(case_tag)
-                    print(f"Saving benchmark camera data for case: {case_tag}")
+                    #print(f"Saving benchmark camera data for case: {case_tag}")
                     case_count = case_count + 1
 
     case_list_path = save_path/const.CASE_FILE
@@ -268,8 +271,8 @@ def load_case_list(benchmark_path: Path | None = None) -> list[str]:
 def load_benchmark_by_index(case_index: int,
                              benchmark_path: Path | None = None
                             ) -> tuple[str,
-                                       pyvale.RenderMeshData,
-                                       pyvale.CameraData]:
+                                       mh.SimData,
+                                       pyv.CameraData]:
 
     if benchmark_path is None:
         benchmark_path = get_benchmark_path()
@@ -290,8 +293,8 @@ def load_benchmark_by_index(case_index: int,
 def load_benchmark_by_tag(case_tag: str,
                           benchmark_path: Path | None = None
                           ) -> tuple[str,
-                                     pyvale.RenderMeshData,
-                                     pyvale.CameraData]:
+                                     mh.SimData,
+                                     pyv.CameraData]:
 
     if benchmark_path is None:
         benchmark_path = get_benchmark_path()

@@ -11,7 +11,7 @@ from pathlib import Path
 import mooseherder as mh
 
 def main() -> None:
-    sim_str = "plate_m10_quadtri"
+    sim_str = "cube_TET10"
     sim_path = Path("src/imagebenchmarks/simulations/")
 
     gmsh_path = Path.home()

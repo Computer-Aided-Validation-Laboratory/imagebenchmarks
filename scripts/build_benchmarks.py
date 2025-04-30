@@ -13,8 +13,9 @@ def main() -> None:
 
     case_list = ib.load_case_list()
     print(80*"-")
-    print(case_list[-1])
+    print(case_list)
     print(80*"-")
+    print(case_list[-1])
 
 if __name__ == "__main__":
     main()
