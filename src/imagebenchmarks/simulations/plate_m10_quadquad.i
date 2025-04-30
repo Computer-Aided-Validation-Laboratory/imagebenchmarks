@@ -34,7 +34,7 @@ ss316LPRatio = 0.3      # -
         add_variables = true
         material_output_family = MONOMIAL   # MONOMIAL, LAGRANGE
         material_output_order = FIRST       # CONSTANT, FIRST, SECOND,
-        generate_output = 'vonmises_stress strain_xx strain_xy strain_xz strain_yx strain_yy strain_yz strain_zx strain_zy strain_zz stress_xx stress_xy stress_xz stress_yx stress_yy stress_yz stress_zx stress_zy stress_zz max_principal_strain mid_principal_strain min_principal_strain'
+        generate_output = 'strain_xx strain_xy strain_xz strain_yx strain_yy strain_yz strain_zx strain_zy strain_zz'
     []
 []
 

@@ -6,6 +6,7 @@ License: MIT
 Copyright (C) 2024 The Computer Aided Validation Team
 ================================================================================
 """
+import copy
 import warnings
 import time
 from pathlib import Path
@@ -65,7 +66,7 @@ def get_sim_file_path(sim_index: int) -> tuple[Path,Path]:
 
 def run_one_simulation(sim_index: int,
                        n_threads: int = 8,
-                       force_gmsh: bool = True,
+                       force_gmsh: bool = False,
                        gmsh_path: Path | None = None,
                        moose_path: Path | None = None,
                        ) -> Path:
@@ -174,7 +175,8 @@ def save_surface_meshes(sim_indices: tuple[int,...] | None = None,
 
 
 def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
-                              save_path: Path | None = None
+                              save_path: Path | None = None,
+                              components: tuple[str,...] = ("disp_x","disp_y","disp_z","temperature"),
                               ) -> tuple[list[Path],list[Path],list[str]]:
 
     if sim_indices is None:
@@ -200,6 +202,15 @@ def build_and_save_benchmarks(sim_indices: tuple[int,...] | None = None,
         elem_count = mesh_world.connect["connect1"].shape[1]
         coord_cent = (np.max(mesh_world.coords,axis=0)
                       - np.min(mesh_world.coords,axis=0))/2
+
+        # Remove everything except the specified components
+        node_vars = {}
+        for kk in components:
+            if kk in mesh_world.node_vars:
+                node_vars[kk] = mesh_world.node_vars[kk]
+
+        # Strip everything else out
+        mesh_world.node_vars = node_vars
 
         sim_tag = f"mesh{sim_index}_{elem_count}elems"
         mesh_path = save_path/(sim_tag+".dill")

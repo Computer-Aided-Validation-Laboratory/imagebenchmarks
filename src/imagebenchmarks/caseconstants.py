@@ -26,6 +26,7 @@ FOCAL_LENGTH = 50.0
 
 SIM_FILES = ("plate_m10",
             "plate_m25",
+            "plate_m50",
             "plate_m10_linquad",
             "plate_m10_quadtri",
             "plate_m10_quadquad",
@@ -37,6 +38,7 @@ SIM_FILES = ("plate_m10",
 
 SIM_COUNT = len(SIM_FILES)
 SIM_TAGS = ("plate_lintri",
+            "plate_lintri",
             "plate_lintri",
             "plate_linquad",
             "plate_quadtri",
