@@ -125,14 +125,14 @@ def run_one_simulation(sim_index: int,
     return sim_path
 
 
-def run_simulations(sim_indices: tuple[int,...] | None = None) -> list[Path]:
+def run_simulations(sim_indices: tuple[int,...] | None = None, num_threads: int = 8) -> list[Path]:
 
     if sim_indices is None:
         sim_indices = range(const.SIM_COUNT)
 
     sim_paths = []
     for ss in sim_indices:
-        sim_paths.append(run_one_simulation(ss))
+        sim_paths.append(run_one_simulation(ss,num_threads))
 
     return sim_paths
 

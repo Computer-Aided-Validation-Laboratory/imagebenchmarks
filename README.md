@@ -14,12 +14,18 @@ import imagebenchmarks as ib
 The case list can also be retrieved using the following: `case_list = ib.load_case_list()`. The mesh data (nodal coordinates, connectivity table and field to render) for the case is stored as a `pyvale.CameraMesh` data class and the camera data for the case is stored as a `pyvale.CameraData` data class. Each `pyvale.CameraData.field_to_render` contains 8 time steps to render along with a zero frame at the start.
 
 The benchmarks should be run as follows:
-- Average render time for a single frame rendering the last field in `pyvale.CameraData.field_to_render` 30 times sequentially. This case only allows parallelisation within a single frame.
-- Average total time to render all 8 frames in `pyvale.CameraData.field_to_render` 30 times. This case allows for rendering the 8 frames in parallel.
+- Average render time for a single frame rendering the last field30 times sequentially. This case only allows parallelisation within a single frame.
+- Average total time to render all 8 frames 30 times. This case allows for rendering the 8 frames in parallel.
 
 ## Case Descriptions
+**Simulation: Simple Multi-Physics Cube**<br>
+A 10mm cube undergoing thermo-mechanical loading as shown in the figure below. The cube is fixed on its bottom edge and the top edge is displaced 1mm in tension over 20 time steps. A heat flux is applied to the top surface and heat transfer coefficient is applied to the bottom surface inducing a temperature gradient in the same direction the is loaded mechanically. The displacement and temperature fields are output for all nodes. This simulation only contains a minimum number of elements for testing rendering algorithms on different element types including higher order elements. The mesh has 1 division per edge for tetrahedral and 2 divisions per edge for hexahedral resulting in a total of 24 3D elements per simulation. When the surface mesh is extracted there are 4 elements per face of the cube giving 24 surface elements for both tetrahedral and hexahedral meshes.
 
-**Simulations**<br>
+|![fig_test_case_cube](images/simplecube_HEX8.png)|
+|:--:|
+|*Paraview rendering of the cube test case for the tetrahedral mesh showing the temperature fieldpv.*|
+
+**Simulation: Mechanical Plate**<br>
 A 3D thin plate with a hole in the center loaded in tension as shown in the figure below. Uses tetrahedral 4-node linear elements with the surface mesh extracted to 3 node linear triangles. Higher order and quadrilateral meshes are included in the later benchmarks denoted: 'quadtri' for quadratic triangles, 'linquad' for linear quadrilaterals and 'quadquad' for quadratic quadrilaterals. The vertical displacement field `disp_y` is to be rendered as the image. Plate mesh bounding box: X [0,100], Y [0,130], Z [0,2] mm.
 
 |![fig_test_case_plate](images/imagebench_platetest_m10.png)|
@@ -91,29 +97,89 @@ The list of all benchmark cases is stored in a json file which can be retrieved 
     "case45_plate_linquad_24Mpx_2subsamp_nocrop_5888elems",
     "case46_plate_linquad_24Mpx_1subsamp_crop_5888elems",
     "case47_plate_linquad_24Mpx_2subsamp_crop_5888elems",
-    "case48_plate_quadtri_1Mpx_1subsamp_nocrop_47104elems",
-    "case49_plate_quadtri_1Mpx_2subsamp_nocrop_47104elems",
-    "case50_plate_quadtri_1Mpx_1subsamp_crop_47104elems",
-    "case51_plate_quadtri_1Mpx_2subsamp_crop_47104elems",
-    "case52_plate_quadtri_5Mpx_1subsamp_nocrop_47104elems",
-    "case53_plate_quadtri_5Mpx_2subsamp_nocrop_47104elems",
-    "case54_plate_quadtri_5Mpx_1subsamp_crop_47104elems",
-    "case55_plate_quadtri_5Mpx_2subsamp_crop_47104elems",
-    "case56_plate_quadtri_24Mpx_1subsamp_nocrop_47104elems",
-    "case57_plate_quadtri_24Mpx_2subsamp_nocrop_47104elems",
-    "case58_plate_quadtri_24Mpx_1subsamp_crop_47104elems",
-    "case59_plate_quadtri_24Mpx_2subsamp_crop_47104elems",
-    "case60_plate_quadquad_1Mpx_1subsamp_nocrop_135168elems",
-    "case61_plate_quadquad_1Mpx_2subsamp_nocrop_135168elems",
-    "case62_plate_quadquad_1Mpx_1subsamp_crop_135168elems",
-    "case63_plate_quadquad_1Mpx_2subsamp_crop_135168elems",
-    "case64_plate_quadquad_5Mpx_1subsamp_nocrop_135168elems",
-    "case65_plate_quadquad_5Mpx_2subsamp_nocrop_135168elems",
-    "case66_plate_quadquad_5Mpx_1subsamp_crop_135168elems",
-    "case67_plate_quadquad_5Mpx_2subsamp_crop_135168elems",
-    "case68_plate_quadquad_24Mpx_1subsamp_nocrop_135168elems",
-    "case69_plate_quadquad_24Mpx_2subsamp_nocrop_135168elems",
-    "case70_plate_quadquad_24Mpx_1subsamp_crop_135168elems",
-    "case71_plate_quadquad_24Mpx_2subsamp_crop_135168elems"
+    "case48_plate_quadtri_1Mpx_1subsamp_nocrop_11776elems",
+    "case49_plate_quadtri_1Mpx_2subsamp_nocrop_11776elems",
+    "case50_plate_quadtri_1Mpx_1subsamp_crop_11776elems",
+    "case51_plate_quadtri_1Mpx_2subsamp_crop_11776elems",
+    "case52_plate_quadtri_5Mpx_1subsamp_nocrop_11776elems",
+    "case53_plate_quadtri_5Mpx_2subsamp_nocrop_11776elems",
+    "case54_plate_quadtri_5Mpx_1subsamp_crop_11776elems",
+    "case55_plate_quadtri_5Mpx_2subsamp_crop_11776elems",
+    "case56_plate_quadtri_24Mpx_1subsamp_nocrop_11776elems",
+    "case57_plate_quadtri_24Mpx_2subsamp_nocrop_11776elems",
+    "case58_plate_quadtri_24Mpx_1subsamp_crop_11776elems",
+    "case59_plate_quadtri_24Mpx_2subsamp_crop_11776elems",
+    "case60_plate_quadquad_1Mpx_1subsamp_nocrop_5888elems",
+    "case61_plate_quadquad_1Mpx_2subsamp_nocrop_5888elems",
+    "case62_plate_quadquad_1Mpx_1subsamp_crop_5888elems",
+    "case63_plate_quadquad_1Mpx_2subsamp_crop_5888elems",
+    "case64_plate_quadquad_5Mpx_1subsamp_nocrop_5888elems",
+    "case65_plate_quadquad_5Mpx_2subsamp_nocrop_5888elems",
+    "case66_plate_quadquad_5Mpx_1subsamp_crop_5888elems",
+    "case67_plate_quadquad_5Mpx_2subsamp_crop_5888elems",
+    "case68_plate_quadquad_24Mpx_1subsamp_nocrop_5888elems",
+    "case69_plate_quadquad_24Mpx_2subsamp_nocrop_5888elems",
+    "case70_plate_quadquad_24Mpx_1subsamp_crop_5888elems",
+    "case71_plate_quadquad_24Mpx_2subsamp_crop_5888elems",
+    "case72_cube_TET4_1Mpx_1subsamp_nocrop_24elems",
+    "case73_cube_TET4_1Mpx_2subsamp_nocrop_24elems",
+    "case74_cube_TET4_1Mpx_1subsamp_crop_24elems",
+    "case75_cube_TET4_1Mpx_2subsamp_crop_24elems",
+    "case76_cube_TET4_5Mpx_1subsamp_nocrop_24elems",
+    "case77_cube_TET4_5Mpx_2subsamp_nocrop_24elems",
+    "case78_cube_TET4_5Mpx_1subsamp_crop_24elems",
+    "case79_cube_TET4_5Mpx_2subsamp_crop_24elems",
+    "case80_cube_TET4_24Mpx_1subsamp_nocrop_24elems",
+    "case81_cube_TET4_24Mpx_2subsamp_nocrop_24elems",
+    "case82_cube_TET4_24Mpx_1subsamp_crop_24elems",
+    "case83_cube_TET4_24Mpx_2subsamp_crop_24elems",
+    "case84_cube_TET10_1Mpx_1subsamp_nocrop_24elems",
+    "case85_cube_TET10_1Mpx_2subsamp_nocrop_24elems",
+    "case86_cube_TET10_1Mpx_1subsamp_crop_24elems",
+    "case87_cube_TET10_1Mpx_2subsamp_crop_24elems",
+    "case88_cube_TET10_5Mpx_1subsamp_nocrop_24elems",
+    "case89_cube_TET10_5Mpx_2subsamp_nocrop_24elems",
+    "case90_cube_TET10_5Mpx_1subsamp_crop_24elems",
+    "case91_cube_TET10_5Mpx_2subsamp_crop_24elems",
+    "case92_cube_TET10_24Mpx_1subsamp_nocrop_24elems",
+    "case93_cube_TET10_24Mpx_2subsamp_nocrop_24elems",
+    "case94_cube_TET10_24Mpx_1subsamp_crop_24elems",
+    "case95_cube_TET10_24Mpx_2subsamp_crop_24elems",
+    "case96_cube_HEX8_1Mpx_1subsamp_nocrop_24elems",
+    "case97_cube_HEX8_1Mpx_2subsamp_nocrop_24elems",
+    "case98_cube_HEX8_1Mpx_1subsamp_crop_24elems",
+    "case99_cube_HEX8_1Mpx_2subsamp_crop_24elems",
+    "case100_cube_HEX8_5Mpx_1subsamp_nocrop_24elems",
+    "case101_cube_HEX8_5Mpx_2subsamp_nocrop_24elems",
+    "case102_cube_HEX8_5Mpx_1subsamp_crop_24elems",
+    "case103_cube_HEX8_5Mpx_2subsamp_crop_24elems",
+    "case104_cube_HEX8_24Mpx_1subsamp_nocrop_24elems",
+    "case105_cube_HEX8_24Mpx_2subsamp_nocrop_24elems",
+    "case106_cube_HEX8_24Mpx_1subsamp_crop_24elems",
+    "case107_cube_HEX8_24Mpx_2subsamp_crop_24elems",
+    "case108_cube_HEX20_1Mpx_1subsamp_nocrop_24elems",
+    "case109_cube_HEX20_1Mpx_2subsamp_nocrop_24elems",
+    "case110_cube_HEX20_1Mpx_1subsamp_crop_24elems",
+    "case111_cube_HEX20_1Mpx_2subsamp_crop_24elems",
+    "case112_cube_HEX20_5Mpx_1subsamp_nocrop_24elems",
+    "case113_cube_HEX20_5Mpx_2subsamp_nocrop_24elems",
+    "case114_cube_HEX20_5Mpx_1subsamp_crop_24elems",
+    "case115_cube_HEX20_5Mpx_2subsamp_crop_24elems",
+    "case116_cube_HEX20_24Mpx_1subsamp_nocrop_24elems",
+    "case117_cube_HEX20_24Mpx_2subsamp_nocrop_24elems",
+    "case118_cube_HEX20_24Mpx_1subsamp_crop_24elems",
+    "case119_cube_HEX20_24Mpx_2subsamp_crop_24elems",
+    "case120_cube_HEX27_1Mpx_1subsamp_nocrop_24elems",
+    "case121_cube_HEX27_1Mpx_2subsamp_nocrop_24elems",
+    "case122_cube_HEX27_1Mpx_1subsamp_crop_24elems",
+    "case123_cube_HEX27_1Mpx_2subsamp_crop_24elems",
+    "case124_cube_HEX27_5Mpx_1subsamp_nocrop_24elems",
+    "case125_cube_HEX27_5Mpx_2subsamp_nocrop_24elems",
+    "case126_cube_HEX27_5Mpx_1subsamp_crop_24elems",
+    "case127_cube_HEX27_5Mpx_2subsamp_crop_24elems",
+    "case128_cube_HEX27_24Mpx_1subsamp_nocrop_24elems",
+    "case129_cube_HEX27_24Mpx_2subsamp_nocrop_24elems",
+    "case130_cube_HEX27_24Mpx_1subsamp_crop_24elems",
+    "case131_cube_HEX27_24Mpx_2subsamp_crop_24elems"
 ]
 ```

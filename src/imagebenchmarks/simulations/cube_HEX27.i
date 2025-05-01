@@ -44,6 +44,8 @@ ThermExp = 17.8e-6 # 1/degC
 #** MOOSEHERDER VARIABLES - END
 #-------------------------------------------------------------------------
 
+# NOTE: cannot make AD due to bugs!
+
 [GlobalParams]
     displacements = 'disp_x disp_y disp_z'
 []
@@ -171,7 +173,7 @@ ThermExp = 17.8e-6 # 1/degC
         poissons_ratio = ${PRatio}
     []
     [stress]
-        type =  ComputeFiniteStrainElasticStress
+        type = ComputeFiniteStrainElasticStress
     []
 []
 

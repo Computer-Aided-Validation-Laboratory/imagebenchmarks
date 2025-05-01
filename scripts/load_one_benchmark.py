@@ -7,6 +7,7 @@ Copyright (C) 2024 The Computer Aided Validation Team
 ================================================================================
 """
 import imagebenchmarks as ib
+import pyvale as pyv
 
 def main() -> None:
 
@@ -33,17 +34,15 @@ def main() -> None:
     print(case_mesh)
     print(case_camera)
     print(80*"-")
-    print(f"{case_mesh.coord_cent=}")
-    print(f"{case_mesh.coord_bound_min=}")
-    print(f"{case_mesh.coord_bound_max=}")
-    print(80*"-")
-    print(f"{case_mesh.node_count=}")
-    print(f"{case_mesh.elem_count=}")
     print(f"{case_mesh.coords.shape=}")
-    print(f"{case_mesh.connectivity.shape=}")
-    print(f"{case_mesh.fields_by_node.shape=}")
+    print(f"{case_mesh.connect["connect1"].shape=}")
+    print(80*"-")
+
 
     # TODO: plot the benchmark mesh using pyvale
+    pyv.plot_sim_data(sim_data=case_mesh,
+                      component="disp_y",
+                      elem_dims=2)
 
 
 if __name__ == "__main__":

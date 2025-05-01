@@ -27,11 +27,12 @@ ss316LPRatio = 0.3      # -
     file = 'plate.msh'
 []
 
-[Modules/TensorMechanics/Master]
+[Physics/SolidMechanics/QuasiStatic]
     [all]
         strain = SMALL
         incremental = true
         add_variables = true
+        use_automatic_differentiation = true
         material_output_family = MONOMIAL   # MONOMIAL, LAGRANGE
         material_output_order = FIRST       # CONSTANT, FIRST, SECOND,
         generate_output = 'strain_xx strain_xy strain_xz strain_yx strain_yy strain_yz strain_zx strain_zy strain_zz'
@@ -40,39 +41,38 @@ ss316LPRatio = 0.3      # -
 
 [BCs]
     [bottom_x]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_x
         boundary = 'bc-base-disp'
         value = 0.0
     []
     [bottom_y]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_y
         boundary = 'bc-base-disp'
         value = 0.0
     []
     [bottom_z]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_z
         boundary = 'bc-base-disp'
         value = 0.0
     []
 
-
     [top_x]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_x
         boundary = 'bc-top-disp'
         value = 0.0
     []
     [top_y]
-        type = FunctionDirichletBC
+        type = ADFunctionDirichletBC
         variable = disp_y
         boundary = 'bc-top-disp'
         function = '${topDispRate}*t'
     []
     [top_z]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_z
         boundary = 'bc-top-disp'
         value = 0.0
@@ -81,12 +81,12 @@ ss316LPRatio = 0.3      # -
 
 [Materials]
     [elasticity]
-        type = ComputeIsotropicElasticityTensor
+        type = ADComputeIsotropicElasticityTensor
         youngs_modulus = ${ss316LEMod}
         poissons_ratio = ${ss316LPRatio}
     []
     [stress]
-        type = ComputeFiniteStrainElasticStress
+        type = ADComputeFiniteStrainElasticStress
     []
 []
 
@@ -105,10 +105,10 @@ ss316LPRatio = 0.3      # -
     petsc_options_iname = '-pc_type -pc_hypre_type'
     petsc_options_value = 'hypre boomeramg'
 
-    l_max_its = 200
+    l_max_its = 1000
     l_tol = 1e-6
 
-    nl_max_its = 100
+    nl_max_its = 200
     nl_rel_tol = 1e-6
     nl_abs_tol = 1e-6
 
@@ -124,13 +124,13 @@ ss316LPRatio = 0.3      # -
 
 [Postprocessors]
     [react_y_bot]
-        type = SidesetReaction
+        type = ADADSidesetReaction
         direction = '0 1 0'
         stress_tensor = stress
         boundary = 'bc-base-disp'
     []
     [react_y_top]
-        type = SidesetReaction
+        type = ADADSidesetReaction
         direction = '0 1 0'
         stress_tensor = stress
         boundary = 'bc-top-disp'

@@ -72,11 +72,11 @@ ThermExp = 17.8e-6 # 1/degC
 
 [Kernels]
     [heat_conduction]
-      type = HeatConduction
+      type = ADHeatConduction
       variable = temperature
     []
     [time_derivative]
-      type = HeatConductionTimeDerivative
+      type = ADHeatConductionTimeDerivative
       variable = temperature
     []
 []
@@ -87,6 +87,7 @@ ThermExp = 17.8e-6 # 1/degC
         strain = SMALL
         incremental = true
         add_variables = true
+        use_automatic_differentiation = true
         material_output_family = MONOMIAL   # MONOMIAL, LAGRANGE
         material_output_order = FIRST       # CONSTANT, FIRST, SECOND,
         generate_output = 'strain_xx strain_yy strain_zz strain_xy strain_yz strain_xz'
@@ -95,13 +96,13 @@ ThermExp = 17.8e-6 # 1/degC
 
 [BCs]
     [heat_flux_in]
-        type = FunctionNeumannBC
+        type = ADFunctionNeumannBC
         variable = temperature
         boundary = 'top'
         function = '${fparse surfHeatFlux}*(1-exp(-(1/${timeConst})*t))'
     []
     [heat_flux_out]
-        type = ConvectiveHeatFluxBC
+        type = ADConvectiveHeatFluxBC
         variable = temperature
         boundary = 'bottom'
         T_infinity = ${coolantTemp}
@@ -109,37 +110,37 @@ ThermExp = 17.8e-6 # 1/degC
     []
 
     [bottom_x]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_x
         boundary = 'bottom'
         value = 0.0
     []
     [bottom_y]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_y
         boundary = 'bottom'
         value = 0.0
     []
     [bottom_z]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_z
         boundary = 'bottom'
         value = 0.0
     []
     [top_x]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_x
         boundary = 'top'
         value = 0.0
     []
     [top_y]
-        type = FunctionDirichletBC
+        type = ADFunctionDirichletBC
         variable = disp_y
         boundary = 'top'
         function = '${topDispRate}*t'
     []
     [top_z]
-        type = DirichletBC
+        type = ADDirichletBC
         variable = disp_z
         boundary = 'top'
         value = 0.0
@@ -148,17 +149,17 @@ ThermExp = 17.8e-6 # 1/degC
 
 [Materials]
     [mat_thermal]
-        type = HeatConductionMaterial
+        type = ADHeatConductionMaterial
         thermal_conductivity = ${ThermCond}
         specific_heat = ${SpecHeat}
     []
     [mat_density]
-        type = GenericConstantMaterial
+        type = ADGenericConstantMaterial
         prop_names = 'density'
         prop_values = ${Density}
     []
     [mat_expansion]
-        type = ComputeThermalExpansionEigenstrain
+        type = ADComputeThermalExpansionEigenstrain
         temperature = temperature
         stress_free_temperature = ${stressFreeTemp}
         thermal_expansion_coeff = ${ThermExp}
@@ -166,12 +167,12 @@ ThermExp = 17.8e-6 # 1/degC
     []
 
     [mat_elasticity]
-        type = ComputeIsotropicElasticityTensor
+        type = ADComputeIsotropicElasticityTensor
         youngs_modulus = ${EMod}
         poissons_ratio = ${PRatio}
     []
     [stress]
-        type =  ComputeFiniteStrainElasticStress
+        type =  ADComputeFiniteStrainElasticStress
     []
 []
 
@@ -210,13 +211,13 @@ ThermExp = 17.8e-6 # 1/degC
 
 [Postprocessors]
     [react_y_bot]
-        type = SidesetReaction
+        type = ADSidesetReaction
         direction = '0 1 0'
         stress_tensor = stress
         boundary = 'bottom'
     []
     [react_y_top]
-        type = SidesetReaction
+        type = ADSidesetReaction
         direction = '0 1 0'
         stress_tensor = stress
         boundary = 'top'
