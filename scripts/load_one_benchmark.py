@@ -11,7 +11,7 @@ import pyvale as pyv
 
 def main() -> None:
 
-    case_index = 10
+    case_index = 71
     case_list = ib.load_case_list()
     print()
     print(80*"-")
@@ -26,7 +26,7 @@ def main() -> None:
     print(case_camera)
     print(80*"-")
 
-    case_tag = case_list[-1]
+    case_tag = case_list[case_index]
     (case_ident,case_mesh,case_camera) = ib.load_benchmark_by_tag(case_tag)
     print()
     print(80*"-")
@@ -35,14 +35,15 @@ def main() -> None:
     print(case_camera)
     print(80*"-")
     print(f"{case_mesh.coords.shape=}")
-    print(f"{case_mesh.connect["connect1"].shape=}")
+    print(f"{case_mesh.connect['connect1'].shape=}")
     print(80*"-")
 
 
     # TODO: plot the benchmark mesh using pyvale
-    pyv.plot_sim_data(sim_data=case_mesh,
+    pv_plot = pyv.plot_sim_data(sim_data=case_mesh,
                       component="disp_y",
                       elem_dims=2)
+    pv_plot.show()
 
 
 if __name__ == "__main__":
